@@ -193,6 +193,7 @@ Menu
 }
 .filter-btn {
   background: transparent;
+  border: 2px solid;
   border-color: var(--clr-gold);
   font-size: 1rem;
   text-transform: capitalize;
