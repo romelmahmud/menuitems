@@ -73,7 +73,12 @@ const menu = [
   },
 ];
 const sectionCeneter = document.querySelector(".section-center");
-const filterBtn = document.querySelectorAll(".filter-btn");
+const btnContainer = document.querySelector(".btn-container");
+
+window.addEventListener("DOMContentLoaded", () => {
+  displayMenuItems(menu);
+  displayCategoriesBtns();
+});
 
 const displayMenuItems = (menuItems) => {
   let displayItems = menuItems.map((item) => {
@@ -94,23 +99,45 @@ const displayMenuItems = (menuItems) => {
   sectionCeneter.innerHTML = displayItems;
 };
 
-window.addEventListener("DOMContentLoaded", () => {
-  displayMenuItems(menu);
-});
+const displayCategoriesBtns = () => {
+  // getting uniqc categories from menu
+  const categories = menu.reduce(
+    (values, item) => {
+      if (!values.includes(item.category)) {
+        values.push(item.category);
+      }
+      return values;
+    },
+    ["all"]
+  );
 
-// filter buttons
+  // creating category buttons
+  const categoriesBtn = categories
+    .map((category) => {
+      return `<button class="filter-btn" type="button" data-id=${category}>
+    ${category}
+  </button>`;
+    })
+    .join("");
 
-filterBtn.forEach((btn) => {
-  btn.addEventListener("click", (e) => {
-    const targetBtnData = e.target.dataset.id;
-    const filterBtnData = menu.filter(
-      (item) => item.category === targetBtnData
-    );
-    // console.log(filterBtnData);
-    if (targetBtnData === "all") {
-      displayMenuItems(menu);
-    } else {
-      displayMenuItems(filterBtnData);
-    }
+  // displaying category buttons in btn-container
+  btnContainer.innerHTML = categoriesBtn;
+
+  // adding filter functionality
+  const filterBtn = btnContainer.querySelectorAll(".filter-btn");
+
+  filterBtn.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const targetBtnData = e.target.dataset.id;
+      const filterBtnData = menu.filter(
+        (item) => item.category === targetBtnData
+      );
+      // console.log(filterBtnData);
+      if (targetBtnData === "all") {
+        displayMenuItems(menu);
+      } else {
+        displayMenuItems(filterBtnData);
+      }
+    });
   });
-});
+};
