@@ -73,10 +73,7 @@ const menu = [
   },
 ];
 const sectionCeneter = document.querySelector(".section-center");
-
-window.addEventListener("DOMContentLoaded", () => {
-  displayMenuItems(menu);
-});
+const filterBtn = document.querySelectorAll(".filter-btn");
 
 const displayMenuItems = (menuItems) => {
   let displayItems = menuItems.map((item) => {
@@ -96,3 +93,24 @@ const displayMenuItems = (menuItems) => {
   displayItems = displayItems.join("");
   sectionCeneter.innerHTML = displayItems;
 };
+
+window.addEventListener("DOMContentLoaded", () => {
+  displayMenuItems(menu);
+});
+
+// filter buttons
+
+filterBtn.forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    const targetBtnData = e.target.dataset.id;
+    const filterBtnData = menu.filter(
+      (item) => item.category === targetBtnData
+    );
+    // console.log(filterBtnData);
+    if (targetBtnData === "all") {
+      displayMenuItems(menu);
+    } else {
+      displayMenuItems(filterBtnData);
+    }
+  });
+});
